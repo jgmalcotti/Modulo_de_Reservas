@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>modelo &mdash; documentación de Modulo de Reservas - 0.0.1</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Modulo de Reservas
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Buscar documentos" aria-label="Buscar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../controlador.html">controlador module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../exp_reg.html">exp_reg module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modelo.html">modelo module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../observer.html">observer module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vista.html">vista module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Modulo de Reservas</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Código de módulo</a></li>
+      <li class="breadcrumb-item active">modelo</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Código fuente para modelo</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sqlite3</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">exp_reg</span> <span class="kn">import</span> <span class="n">ExpReg</span>
+<span class="kn">from</span> <span class="nn">tkinter.messagebox</span> <span class="kn">import</span> <span class="n">showinfo</span>
+<span class="kn">from</span> <span class="nn">tkinter.messagebox</span> <span class="kn">import</span> <span class="n">showerror</span>
+<span class="kn">from</span> <span class="nn">observer</span> <span class="kn">import</span> <span class="n">Sujeto</span>
+
+
+<div class="viewcode-block" id="AvisoAlta"><a class="viewcode-back" href="../modelo.html#modelo.AvisoAlta">[documentos]</a><span class="k">def</span> <span class="nf">AvisoAlta</span><span class="p">(</span><span class="n">funcion</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Este es un decorador que se ejecuta cuando se da de alta una reserva por medio</span>
+<span class="sd">    de la funcion &quot;funcion_a&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+        
+    <span class="k">def</span> <span class="nf">envoltura</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">funcion</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Se acaba de ejecutar la funcion Alta de registro </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">funcion</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">envoltura</span></div>
+
+
+<div class="viewcode-block" id="AvisoBaja"><a class="viewcode-back" href="../modelo.html#modelo.AvisoBaja">[documentos]</a><span class="k">def</span> <span class="nf">AvisoBaja</span><span class="p">(</span><span class="n">funcion</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Este es un decorador que se ejecuta cuando se da de baja una reserva </span>
+<span class="sd">    por medio de la funcion &quot;funcion_b&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">envoltura</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">funcion</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Se acaba de ejecutar la funcion Baja de registro </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">funcion</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">envoltura</span></div>
+
+
+<div class="viewcode-block" id="AvisoModificar"><a class="viewcode-back" href="../modelo.html#modelo.AvisoModificar">[documentos]</a><span class="k">def</span> <span class="nf">AvisoModificar</span><span class="p">(</span><span class="n">funcion</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Este es un decorador que se ejecuta cuando se modica una reserva por</span>
+<span class="sd">    medio de la funcion &quot;funcion_m&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">envoltura</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">funcion</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Se acaba de ejecutar la funcion modificacion de registro </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">funcion</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">envoltura</span></div>
+
+
+<div class="viewcode-block" id="Abmc"><a class="viewcode-back" href="../modelo.html#modelo.Abmc">[documentos]</a><span class="k">class</span> <span class="nc">Abmc</span><span class="p">(</span><span class="n">Sujeto</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;La Clase Abmc es donde se encuentran las funciones para dar de alta,</span>
+<span class="sd">    baja, modificacion y consulta de las reservas</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">validacion</span> <span class="o">=</span> <span class="n">ExpReg</span><span class="p">()</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">con</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;reserva.db&quot;</span><span class="p">)</span>
+            <span class="n">cursor</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+            <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;CREATE TABLE mitabla(id integer PRIMARY KEY, ap_y_nom text, documento text, domicilio text, telefono text, mail text, fecha_ing date, fecha_eg date)&quot;</span>
+
+            <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+            <span class="n">con</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+<div class="viewcode-block" id="Abmc.conexion"><a class="viewcode-back" href="../modelo.html#modelo.Abmc.conexion">[documentos]</a>    <span class="k">def</span> <span class="nf">conexion</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Con esta funcion se logra la coneccion a la base de datos &quot;reserva.db&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">con</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;reserva.db&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">con</span></div>
+
+    <span class="c1">################################################################</span>
+    <span class="c1">#   ALTA CON VALIDACION REGEX DEL MAIL</span>
+    <span class="c1">################################################################</span>
+    
+<div class="viewcode-block" id="Abmc.funcion_a"><a class="viewcode-back" href="../modelo.html#modelo.Abmc.funcion_a">[documentos]</a>    <span class="nd">@AvisoAlta</span>
+    <span class="k">def</span> <span class="nf">funcion_a</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">ap_y_nom</span><span class="p">,</span> <span class="n">documento</span><span class="p">,</span> <span class="n">domicilio</span><span class="p">,</span> <span class="n">telefono</span><span class="p">,</span> <span class="n">mail</span><span class="p">,</span> <span class="n">fecha_ing</span><span class="p">,</span> <span class="n">fecha_eg</span><span class="p">,</span> <span class="n">tree</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Con esta funcion se logra dar de alta una reserva</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">verificacion1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validacion</span><span class="o">.</span><span class="n">mail</span><span class="p">(</span><span class="n">mail</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+        <span class="n">verificacion2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validacion</span><span class="o">.</span><span class="n">fecha_eg</span><span class="p">(</span><span class="n">fecha_eg</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+        <span class="n">verificacion3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validacion</span><span class="o">.</span><span class="n">fecha_ing</span><span class="p">(</span><span class="n">fecha_ing</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">verificacion1</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verificacion2</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">verificacion3</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                    
+                    <span class="n">con</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conexion</span><span class="p">()</span>
+                    <span class="n">cursor</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+                    <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO mitabla (ap_y_nom, </span><span class="se">\</span>
+<span class="s2">                            documento, domicilio, telefono, mail, </span><span class="se">\</span>
+<span class="s2">                            fecha_ing, fecha_eg) VALUES </span><span class="se">\</span>
+<span class="s2">                            (?, ?, ?, ?, ?, ?, ?)&quot;</span>
+
+                    <span class="n">datos</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">ap_y_nom</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+                        <span class="n">documento</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+                        <span class="n">domicilio</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+                        <span class="n">telefono</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+                        <span class="n">mail</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+                        <span class="n">fecha_ing</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+                        <span class="n">fecha_eg</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+                    <span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">notificar</span><span class="p">(</span><span class="n">ap_y_nom</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="n">fecha_ing</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+
+                    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">datos</span><span class="p">)</span>
+                    <span class="n">con</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+                    <span class="n">tree</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+                        <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;end&quot;</span><span class="p">,</span>
+                        <span class="n">text</span><span class="o">=</span><span class="p">(</span><span class="nb">id</span><span class="p">),</span>
+                        <span class="n">values</span><span class="o">=</span><span class="p">(</span>
+                            <span class="n">ap_y_nom</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+                            <span class="n">documento</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+                            <span class="n">domicilio</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+                            <span class="n">telefono</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+                            <span class="n">mail</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+                            <span class="n">fecha_ing</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+                            <span class="n">fecha_eg</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+                        <span class="p">),</span>
+                    <span class="p">)</span>
+                    <span class="n">ap_y_nom</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                    <span class="n">documento</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                    <span class="n">domicilio</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                    <span class="n">telefono</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                    <span class="n">mail</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                    <span class="n">fecha_ing</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                    <span class="n">fecha_eg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">funcion_bt</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">funcion_v</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+                   
+                    <span class="n">showinfo</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;Reserva ingresada correctamente&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Fecha de Ingreso no valida&quot;</span><span class="p">,</span> <span class="s2">&quot;Ingresela nuevamente&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Fecha de egreso no valida&quot;</span><span class="p">,</span> <span class="s2">&quot;Ingresela nuevamente&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Mail no valido&quot;</span><span class="p">,</span> <span class="s2">&quot;Ingreselo nuevamente&quot;</span><span class="p">)</span></div>
+
+        
+
+    <span class="c1">################################################################</span>
+    <span class="c1">#   BAJA DE LA RESERVA SELECCIONADA</span>
+    <span class="c1">################################################################</span>
+
+
+<div class="viewcode-block" id="Abmc.funcion_b"><a class="viewcode-back" href="../modelo.html#modelo.Abmc.funcion_b">[documentos]</a>    <span class="nd">@AvisoBaja</span>
+    <span class="k">def</span> <span class="nf">funcion_b</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">,</span> <span class="n">tree</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Con esta funcion se logra dar de baja una reserva</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">con</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conexion</span><span class="p">()</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+        <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;DELETE FROM mitabla WHERE documento = ?&quot;</span>
+        <span class="n">datos</span> <span class="o">=</span> <span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="mi">1</span><span class="p">],)</span>
+
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">datos</span><span class="p">)</span>
+        <span class="n">con</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">funcion_v</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+
+        <span class="n">showinfo</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;Reserva eliminada correctamente&quot;</span><span class="p">)</span></div>
+
+    <span class="c1">################################################################</span>
+    <span class="c1">#   MODIFICACION DE LA RESERVA</span>
+    <span class="c1">################################################################</span>
+
+<div class="viewcode-block" id="Abmc.funcion_m"><a class="viewcode-back" href="../modelo.html#modelo.Abmc.funcion_m">[documentos]</a>    <span class="nd">@AvisoModificar</span>
+    <span class="k">def</span> <span class="nf">funcion_m</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ap_y_nom</span><span class="p">,</span> <span class="n">documento</span><span class="p">,</span> <span class="n">domicilio</span><span class="p">,</span> <span class="n">telefono</span><span class="p">,</span> <span class="n">mail</span><span class="p">,</span> <span class="n">fecha_ing</span><span class="p">,</span> <span class="n">fecha_eg</span><span class="p">,</span> <span class="n">tree</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Con esta funcion se logra modificar una reserva</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tree</span><span class="o">.</span><span class="n">selection</span><span class="p">():</span>
+            <span class="n">showerror</span><span class="p">(</span>
+                <span class="s2">&quot;No selecciono ninguna reserva&quot;</span><span class="p">,</span> <span class="s2">&quot;Seleccione una y vuelvalo a intentar&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">verificacion1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validacion</span><span class="o">.</span><span class="n">mail</span><span class="p">(</span><span class="n">mail</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+            <span class="n">verificacion2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validacion</span><span class="o">.</span><span class="n">fecha_eg</span><span class="p">(</span><span class="n">fecha_eg</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+            <span class="n">verificacion3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validacion</span><span class="o">.</span><span class="n">fecha_ing</span><span class="p">(</span><span class="n">fecha_ing</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+
+            <span class="k">if</span> <span class="n">verificacion1</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">verificacion2</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">verificacion3</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+          
+                        <span class="n">con</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conexion</span><span class="p">()</span>
+                        <span class="n">cursor</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+                        <span class="k">for</span> <span class="n">selected_item</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">selection</span><span class="p">():</span>
+                            <span class="n">item</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">selected_item</span><span class="p">)</span>
+                            <span class="nb">id</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span>
+
+                        <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;UPDATE mitabla SET ap_y_nom=?, </span><span class="se">\</span>
+<span class="s2">                                documento=?, domicilio=?, telefono=?, mail=?, </span><span class="se">\</span>
+<span class="s2">                                fecha_ing=?, fecha_eg=? </span><span class="se">\</span>
+<span class="s2">                                WHERE id = ?&quot;</span>
+
+                        <span class="n">datos</span> <span class="o">=</span> <span class="p">(</span>
+                            <span class="n">ap_y_nom</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+                            <span class="n">documento</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+                            <span class="n">domicilio</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+                            <span class="n">telefono</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+                            <span class="n">mail</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+                            <span class="n">fecha_ing</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+                            <span class="n">fecha_eg</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+                            <span class="nb">id</span><span class="p">,</span>
+                        <span class="p">)</span>
+
+                        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">datos</span><span class="p">)</span>
+                        <span class="n">con</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+                        <span class="n">ap_y_nom</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                        <span class="n">documento</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                        <span class="n">domicilio</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                        <span class="n">telefono</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                        <span class="n">mail</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                        <span class="n">fecha_ing</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                        <span class="n">fecha_eg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+                        <span class="bp">self</span><span class="o">.</span><span class="n">funcion_bt</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">funcion_v</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+
+                        <span class="n">showinfo</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;Modificacion efectuada correctamente&quot;</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Fecha de Ingreso no valida&quot;</span><span class="p">,</span> <span class="s2">&quot;Ingresela nuevamente&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Fecha de egreso no valida&quot;</span><span class="p">,</span> <span class="s2">&quot;Ingresela nuevamente&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Mail no valido&quot;</span><span class="p">,</span> <span class="s2">&quot;Ingreselo nuevamente&quot;</span><span class="p">)</span></div>
+
+    <span class="c1">################################################################</span>
+    <span class="c1">#   VISUALIZACION DE TODAS LAS RESERVAS</span>
+    <span class="c1">################################################################</span>
+
+<div class="viewcode-block" id="Abmc.funcion_v"><a class="viewcode-back" href="../modelo.html#modelo.Abmc.funcion_v">[documentos]</a>    <span class="k">def</span> <span class="nf">funcion_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Con esta funcion se logra visualizar las reservas</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">refresh</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">get_children</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">refresh</span><span class="p">:</span>
+            <span class="n">tree</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="n">con</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conexion</span><span class="p">()</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+        <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;SELECT * FROM mitabla&quot;</span>
+
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+
+        <span class="n">resultado</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">resultado</span><span class="p">:</span>
+            <span class="n">tree</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+                <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">values</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">7</span><span class="p">])</span>
+            <span class="p">)</span>
+        <span class="n">con</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Abmc.funcion_bt"><a class="viewcode-back" href="../modelo.html#modelo.Abmc.funcion_bt">[documentos]</a>    <span class="k">def</span> <span class="nf">funcion_bt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Con esta funcion se refrescan las reservas</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">refresh</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">get_children</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">refresh</span><span class="p">:</span>
+            <span class="n">tree</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Derechos de autor 2023, Guillermo Malcotti.</p>
+  </div>
+
+  Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    proporcionado por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
